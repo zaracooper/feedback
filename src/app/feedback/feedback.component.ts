@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NetlifyFormsService } from '../netlify-forms/netlify-forms.service';
@@ -27,15 +27,12 @@ export class FeedbackComponent {
   ) { }
 
   onSubmit() {
-    this.netlifyForms.submitFeedback(this.feedbackForm.value).subscribe(
-      () => {
-        this.feedbackForm.reset();
-        this.router.navigateByUrl('/success');
-      },
-      err => {
-        this.errorMsg = err;
-      }
-    );
+    this.netlifyForms.submitFeedback(this.feedbackForm.value)
+      .subscribe(
+        () => this.feedbackForm.reset(),
+        err => this.errorMsg = err,
+        () => this.router.navigateByUrl('/success')
+      );
   }
 
   closeError() {
